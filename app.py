@@ -30,14 +30,13 @@ def create_todo():
     body['description'] = todo.description
   except:
     error = True
-    db.session.rollback()
-    print(sys.exc_info())
+    db.session.rollback(print('error'))
   finally:
     db.session.close()
-  if error:
-    abort (400)
-  else:
-    return redirect(url_for('index'))
+    if error:
+      abort (400)
+    else:
+      return redirect(url_for('index'))
 
 @app.route('/')
 def index():
