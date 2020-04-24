@@ -23,6 +23,7 @@
     <h3>{{ current_list.name }}</h3>
     <form id="form" method="post" action="/todos/create">
       <input type="text" id="description" name="description" />
+      <input type="hidden" id="list_id" name="list_id" value="{{ current_list.id }}"/>
       <input type="submit" value="Create" />
     </form>
     <ul id="todos">
