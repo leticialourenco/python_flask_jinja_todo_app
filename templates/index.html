@@ -2,39 +2,56 @@
   <head>
     <title>Todo App</title>
     <style>
-      .hidden { display: none; }
-      .display { display: block; }
-      ul { display: inline_block; list-style: none; padding: 0; margin: 0; width: 250px; float: left;}
+      body { font-family: monospace; width: 100%; max-width: 800px; border: solid 1px #000; padding: 30px 50px; margin: 30px auto; }
+      ul { display: inline_block; list-style: none; padding: 0; margin: 0; }
       li { clear: both; padding: 10px 0; border-bottom: 1px solid #eee; }
       li button { -webkit-appearance: none; border: none; outline: none; float: right; cursor: pointer; font-size: 18px; color: #aaa; }
+      a, h3 { text-decoration: none; letter-spacing: 1; color: black; font-weight: 800; font-size: 15px; }
+      a:hover, .btn:hover, button:hover { opacity: .7 }
+      input {  padding: 5px 10px; }
+      .hidden { display: none; }
+      .display { display: block; }
+      .uppercase { text-transform: uppercase; }
+      .textfield { width: 80%; -webkit-appearance: none; outline: none; border: solid 1px #ddd; padding: 5px; font-size: 14px; font-family: monospace; }
+      .btn { width: 20%; float: right; font-weight: 800; background: black; color: white; border: none; letter-spacing: 1;  padding: 7px 10px; cursor: pointer; }
+      .container { float: left; }
+      .sidebar { width: 30%; }
+      .content { width: 70%; }
+      .sidebar ul { padding: 5px 50px 0 0; }
     </style>
   </head>
   <body>
     <div id="error" class="hidden">Something went wrong!</div>
 
-    <ul id="lists">
-      {% for list in lists %}
-      <li>
-        <a href="/lists/{{ list.id }}">{{ list.name }}</a>
-      </li>
-      {% endfor %}
-    </ul>
+    <div class="container sidebar">
+      <ul id="lists">
+        {% for list in lists %}
+        <li>
+          <a href="/lists/{{ list.id }}" class="uppercase">{{ list.name }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
 
-    <h3>{{ current_list.name }}</h3>
-    <form id="form" method="post" action="/todos/create">
-      <input type="text" id="description" name="description" />
-      <input type="hidden" id="list_id" name="list_id" value="{{ current_list.id }}"/>
-      <input type="submit" value="Create" />
-    </form>
-    <ul id="todos">
-      {% for todo in todos %}
-      <li>
-        <input id={{ todo.id }} class="check-completed" type="checkbox" {% if todo.completed %} checked {% endif %}/>
-        {{ todo.description }}
-        <button id={{ todo.id }} class="delete">&cross;</button>
-      </li>
-      {% endfor %}
-    </ul>
+    <div class="container content">
+      <h3 class="uppercase">{{ current_list.name }}</h3>
+      <form id="form" method="post" action="/todos/create">
+        <input type="text" id="description" name="description" class="textfield" autocomplete="off" />
+        <input type="hidden" id="list_id" name="list_id" value="{{ current_list.id }}"/>
+        <input type="submit" value="add" class="uppercase btn"/>
+      </form>
+
+      <ul id="todos">
+        {% for todo in todos %}
+        <li>
+          <input id={{ todo.id }} class="check-completed" type="checkbox" {% if todo.completed %} checked {% endif %}/>
+          {{ todo.description }}
+          <button id={{ todo.id }} class="delete">&cross;</button>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
     <script>
       const delete_buttons = document.querySelectorAll('.delete');
       for (let i=0; i < delete_buttons.length; i++){

@@ -72,7 +72,7 @@ def create_todo():
     if error:
       abort (400)
     else:
-      return redirect(url_for('index'))
+      return redirect(url_for('get_list_todos', list_id=list_id))
 
 @app.route('/lists/<list_id>')
 def get_list_todos(list_id):
@@ -81,7 +81,6 @@ def get_list_todos(list_id):
   todos=Todo.query.filter_by(list_id=list_id).order_by('id').all(),
   current_list=TodoList.query.get(list_id)
 )
-
 
 @app.route('/')
 def index():
