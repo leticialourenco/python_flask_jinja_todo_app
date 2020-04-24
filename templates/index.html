@@ -4,23 +4,33 @@
     <style>
       .hidden { display: none; }
       .display { display: block; }
-      ul { list-style: none; padding: 0; margin: 0; width: 200px; }
+      ul { display: inline_block; list-style: none; padding: 0; margin: 0; width: 250px; float: left;}
       li { clear: both; padding: 10px 0; border-bottom: 1px solid #eee; }
       li button { -webkit-appearance: none; border: none; outline: none; float: right; cursor: pointer; font-size: 18px; color: #aaa; }
     </style>
   </head>
   <body>
     <div id="error" class="hidden">Something went wrong!</div>
+
+    <ul id="lists">
+      {% for list in lists %}
+      <li>
+        <a href="/lists/{{ list.id }}">{{ list.name }}</a>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h3>{{ current_list.name }}</h3>
     <form id="form" method="post" action="/todos/create">
       <input type="text" id="description" name="description" />
       <input type="submit" value="Create" />
     </form>
     <ul id="todos">
-      {% for d in data %}
+      {% for todo in todos %}
       <li>
-        <input id={{ d.id }} class="check-completed" type="checkbox" {% if d.completed %} checked {% endif %}/>
-        {{ d.description }}
-        <button id={{ d.id }} class="delete">&cross;</button>
+        <input id={{ todo.id }} class="check-completed" type="checkbox" {% if todo.completed %} checked {% endif %}/>
+        {{ todo.description }}
+        <button id={{ todo.id }} class="delete">&cross;</button>
       </li>
       {% endfor %}
     </ul>
